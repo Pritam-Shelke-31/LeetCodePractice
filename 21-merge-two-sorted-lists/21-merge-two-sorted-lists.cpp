@@ -11,28 +11,51 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-	//Checking if list 1 is empty if it is then we are returning the list 2
-         if (list1==NULL)
-        {
+       
+	    // if list1 happen to be NULL
+		// we will simply return list2.
+        if(list1 == NULL)
             return list2;
-        }
-		//Checking if list 2 is empty if it is then we are returning the list 1
-        if (list2==NULL)
+		
+		// if list2 happen to be NULL
+		// we will simply return list1.
+        if(list2 == NULL)
+            return list1;
+        
+        ListNode * ptr = list1;
+        if(list1 -> val > list2 -> val)
         {
-            return list1;
+            ptr = list2;
+            list2 = list2 -> next;
         }
-		//If upper two conditions are false then we are performing this using recursion
-		//In this block we are checking the value of list 1 in which are doing the same sorting stuff thing
-		//and in the end after performing the sorting using recursion we are simply returing the list 1
-        if (list1->val<list2->val){
-            list1->next = mergeTwoLists(list1->next,list2);
-            return list1;
+        else
+        {
+            list1 = list1 -> next;
         }
-		//The same above explanation goes for it too 
-		//Just the minor difference is that we are returning the list 2 because after the check of list 1 and list 2 value
-        else{
-             list2->next = mergeTwoLists(list1,list2->next);
-             return list2;
+        ListNode *curr = ptr;
+        
+		// till one of the list doesn't reaches NULL
+        while(list1 &&  list2)
+        {
+            if(list1 -> val < list2 -> val){
+                curr->next = list1;
+                list1 = list1 -> next;
+            }
+            else{
+                curr->next = list2;
+                list2 = list2 -> next;
+            }
+            curr = curr -> next;
+                
         }
+		
+		// adding remaining elements of bigger list.
+        if(!list1)
+            curr -> next = list2;
+        else
+            curr -> next = list1;
+            
+        return ptr;
+       
     }
 };
